@@ -42,6 +42,12 @@ public class TopWordFinderTopologyPartC {
 
     ------------------------------------------------- */
 
+    config.put("input_file", args[0]);
+    builder.setSpout("spout", new FileReaderSpout());
+    builder.setBolt("split", new SplitSentenceBolt(), 8).shuffleGrouping("spout");
+    builder.setBolt("normalize", new NormalizerBolt(), 10).shuffleGrouping("split");
+    builder.setBolt("count", new WordCountBolt(), 12).fieldsGrouping("normalize", new Fields("word"));
+
 
     config.setMaxTaskParallelism(3);
 
