@@ -26,11 +26,14 @@ public class TopWordFinderTopologyPartD {
     config.setDebug(true);
 
     config.put("input_file", args[0]);
+
+    Integer N = 10;
+
     builder.setSpout("spout", new FileReaderSpout());
     builder.setBolt("split", new SplitSentenceBolt(), 8).shuffleGrouping("spout");
     builder.setBolt("normalize", new NormalizerBolt(), 10).shuffleGrouping("split");
     builder.setBolt("count", new WordCountBolt(), 12).fieldsGrouping("normalize", new Fields("word"));
-    builder.setBolt("top-n", new TopNFinderBolt(), 1).globalGrouping("1");
+    builder.setBolt("top-n", new TopNFinderBolt(N), 1).globalGrouping("1");
 
     config.setMaxTaskParallelism(3);
 
