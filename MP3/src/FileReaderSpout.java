@@ -15,18 +15,24 @@ import backtype.storm.tuple.Values;
 public class FileReaderSpout implements IRichSpout {
   private SpoutOutputCollector _collector;
   private TopologyContext context;
+  private FileReader _fileReader;
+  private Boolean _completed;
 
 
   @Override
   public void open(Map conf, TopologyContext context,
                    SpoutOutputCollector collector) {
-
-     /*
-    ----------------------TODO-----------------------
-    Task: initialize the file reader
-
-
-    ------------------------------------------------- */
+    _completed = false;
+    try
+    {
+      _fileReader = new FileReader(conf.get("input_file").toString());
+      _collector = collector;   
+ 
+    } catch (FileNotFoundException e)
+    {
+ 
+      e.printStackTrace();
+    }
 
     this.context = context;
     this._collector = collector;
@@ -34,16 +40,32 @@ public class FileReaderSpout implements IRichSpout {
 
   @Override
   public void nextTuple() {
-
-     /*
-    ----------------------TODO-----------------------
-    Task:
-    1. read the next line and emit a tuple for it
-    2. don't forget to sleep when the file is entirely read to prevent a busy-loop
-
-    ------------------------------------------------- */
-
-
+    if (_completed)
+    {
+      try
+      {
+        Thread.sleep(1000);
+      } catch (InterruptedException e)
+      {
+        e.printStackTrace();
+      }
+    }
+ 
+    BufferedReader reader = new BufferedReader(_fileReader);
+    String line;
+    try
+    {
+      while ((line = reader.readLine()) != null)
+      {
+        _collector.emit(new Values(line), line);
+      }
+    } catch (IOException e)
+    {
+      e.printStackTrace();
+    } finally
+    {
+      _completed = true;
+    }
   }
 
   @Override
@@ -55,12 +77,14 @@ public class FileReaderSpout implements IRichSpout {
 
   @Override
   public void close() {
-   /*
-    ----------------------TODO-----------------------
-    Task: close the file
-
-
-    ------------------------------------------------- */
+   super.close();
+    try
+    {
+      _fileReader.close();
+    } catch (IOException e)
+    {
+      e.printStackTrace();
+    }
 
   }
 
