@@ -43,17 +43,17 @@ public class TopNFinderBolt extends BaseBasicBolt {
   }
 
   private void sortValues(){
-    List list = new LinkedList(map.entrySet());
+    List<Map.Entry<String, Integer>> list = new LinkedList<String, Integer>(map.entrySet());
     Collections.sort(list, new Comparator() {
       public int compare(Object o1, Object o2) {
-        return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
+        return ((Comparable) ((Map.Entry<String, Integer>) (o1)).getValue()).compareTo(((Map.Entry<String, Integer>) (o2)).getValue());
       }
     });
 
-    HashMap sortedHashMap = new LinkedHashMap();
+    HashMap<String, Integer> sortedHashMap = new LinkedHashMap<String, Integer>();
     //for (Iterator it = list.iterator(); it.hasNext();) {
     for (Iterator it = list.descendingIterator(); it.hasNext();) {
-      Map.Entry entry = (Map.Entry) it.next();
+      Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) it.next();
       sortedHashMap.put(entry.getKey(), entry.getValue());
     } 
     currentTopWords = sortedHashMap;
@@ -63,7 +63,7 @@ public class TopNFinderBolt extends BaseBasicBolt {
     while(currentTopWords.size() > this.N){
       String firstKey = getFirstKey();
       if(firstKey == null) break;
-      
+
       currentTopWords.remove(firstKey);
     }
   }
