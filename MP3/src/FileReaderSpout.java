@@ -77,7 +77,6 @@ public class FileReaderSpout implements IRichSpout {
 
   @Override
   public void close() {
-   super.close();
     try
     {
       _fileReader.close();
