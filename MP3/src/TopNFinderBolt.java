@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.Comparator;
+import java.util.Collections;
 
 /**
  * a bolt that finds the top n words.
@@ -77,7 +78,7 @@ public class TopNFinderBolt extends BaseBasicBolt {
   private String getFirstKey(){
     String outValue = null;
     for(String key: currentTopWords.keySet()){
-      outValueout = key;
+      outValue = key;
       break;
     }
     return outValue;
