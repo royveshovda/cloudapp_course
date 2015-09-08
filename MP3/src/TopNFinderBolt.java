@@ -23,13 +23,13 @@ public class TopNFinderBolt extends BaseBasicBolt {
 
   @Override
   public void execute(Tuple tuple, BasicOutputCollector collector) {
- /*
-    ----------------------TODO-----------------------
-    Task: keep track of the top N words
+    String word = tuple.getStringByField("word");
+    Integer count = tuple.getIntegerByField("count");
 
 
-    ------------------------------------------------- */
-
+    addValue(word, count);
+    sortValues();
+    removeValuesMoreThanN();
 
     //reports the top N words periodically
     if (System.currentTimeMillis() - lastReportTime >= intervalToReport) {
@@ -37,6 +37,46 @@ public class TopNFinderBolt extends BaseBasicBolt {
       lastReportTime = System.currentTimeMillis();
     }
   }
+
+  private void addValue(String word, Integer count){
+    currentTopWords.put(word, count);
+  }
+
+  private void sortValues(){
+    List list = new LinkedList(map.entrySet());
+    Collections.sort(list, new Comparator() {
+      public int compare(Object o1, Object o2) {
+        return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
+      }
+    });
+
+    HashMap sortedHashMap = new LinkedHashMap();
+    //for (Iterator it = list.iterator(); it.hasNext();) {
+    for (Iterator it = list.descendingIterator(); it.hasNext();) {
+      Map.Entry entry = (Map.Entry) it.next();
+      sortedHashMap.put(entry.getKey(), entry.getValue());
+    } 
+    currentTopWords = sortedHashMap;
+  }
+
+  private void removeValuesMoreThanN(){
+    while(currentTopWords.size() > this.N){
+      String firstKey = getFirstKey();
+      if(firstKey == null) break;
+      
+      currentTopWords.remove(firstKey);
+    }
+  }
+
+  private String getFirstKey(){
+    String outValue = null;
+    for(int key: currentTopWords.keySet()){
+      outValueout = key;
+      break;
+    }
+    return outValue;
+  }
+
 
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer) {
