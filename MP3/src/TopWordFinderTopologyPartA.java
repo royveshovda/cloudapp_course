@@ -23,7 +23,7 @@ public class TopWordFinderTopologyPartA {
     TopologyBuilder builder = new TopologyBuilder();
 
     Config config = new Config();
-    //config.setDebug(true);
+    config.setDebug(true);
 
     //CUSTOM CODE
     builder.setSpout("spout", new RandomSentenceSpout(), 5);

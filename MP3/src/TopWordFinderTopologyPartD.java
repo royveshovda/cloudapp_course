@@ -23,7 +23,7 @@ public class TopWordFinderTopologyPartD {
     TopologyBuilder builder = new TopologyBuilder();
 
     Config config = new Config();
-    //config.setDebug(true);
+    config.setDebug(true);
 
     config.put("input_file", args[0]);
 
