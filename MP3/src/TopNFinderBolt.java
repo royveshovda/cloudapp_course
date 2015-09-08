@@ -6,6 +6,9 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Iterator;
 
 /**
  * a bolt that finds the top n words.
