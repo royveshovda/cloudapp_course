@@ -23,24 +23,8 @@ public class TopWordFinderTopologyPartC {
     TopologyBuilder builder = new TopologyBuilder();
 
     Config config = new Config();
-    //config.setDebug(true);
+    config.setDebug(true);
 
-
-    /*
-    ----------------------TODO-----------------------
-    Task: wire up the topology
-
-    NOTE:make sure when connecting components together, using the functions setBolt(name,…) and setSpout(name,…),
-    you use the following names for each component:
-
-    FileReaderSpout -> "spout"
-    SplitSentenceBolt -> "split"
-    WordCountBolt -> "count"
-    NormalizerBolt -> "normalize"
-
-
-
-    ------------------------------------------------- */
 
     config.put("input_file", args[0]);
     builder.setSpout("spout", new FileReaderSpout());
