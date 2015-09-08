@@ -58,8 +58,8 @@ public class TopNFinderBolt extends BaseBasicBolt {
     });
 
     HashMap<String, Integer> sortedHashMap = new LinkedHashMap<String, Integer>();
-    //for (Iterator it = list.iterator(); it.hasNext();) {
-    for (Iterator it = list.descendingIterator(); it.hasNext();) {
+    for (Iterator it = list.iterator(); it.hasNext();) {
+    //for (Iterator it = list.descendingIterator(); it.hasNext();) {
       Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) it.next();
       sortedHashMap.put(entry.getKey(), entry.getValue());
     } 
