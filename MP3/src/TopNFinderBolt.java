@@ -49,7 +49,7 @@ public class TopNFinderBolt extends BaseBasicBolt {
   }
 
   private void sortValues(){
-    List<Map.Entry<String, Integer>> list = new LinkedList<String, Integer>(currentTopWords.entrySet());
+    List<Map.Entry<String, Integer>> list = new LinkedList(currentTopWords.entrySet());
     Collections.sort(list, new Comparator() {
       public int compare(Object o1, Object o2) {
         return ((Comparable) ((Map.Entry<String, Integer>) (o1)).getValue()).compareTo(((Map.Entry<String, Integer>) (o2)).getValue());
@@ -76,7 +76,7 @@ public class TopNFinderBolt extends BaseBasicBolt {
 
   private String getFirstKey(){
     String outValue = null;
-    for(int key: currentTopWords.keySet()){
+    for(String key: currentTopWords.keySet()){
       outValueout = key;
       break;
     }
