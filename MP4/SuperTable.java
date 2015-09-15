@@ -73,13 +73,14 @@ public class SuperTable{
       hTable.close();
 
       // Instantiate the Scan class
+      HTable hTableScan = new HTable(config, "powers");
       Scan scan = new Scan();
      
       // Scan the required columns
       scan.addColumn(Bytes.toBytes("personal"), Bytes.toBytes("hero"));
 
       // Get the scan result
-      ResultScanner scanner = hTable.getScanner(scan);
+      ResultScanner scanner = hTableScan.getScanner(scan);
 
       // Read values from scan result
       // Print scan result
@@ -90,6 +91,6 @@ public class SuperTable{
       scanner.close();
 
       // Htable closer
-      hTable.close();
+      hTableScan.close();
    }
 }
