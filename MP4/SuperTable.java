@@ -79,7 +79,7 @@ public class SuperTable{
       scan.addColumn(Bytes.toBytes("personal"), Bytes.toBytes("hero"));
 
       // Get the scan result
-      ResultScanner scanner = table.getScanner(scan);
+      ResultScanner scanner = hTable.getScanner(scan);
 
       // Read values from scan result
       // Print scan result
