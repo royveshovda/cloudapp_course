@@ -85,7 +85,7 @@ public final class KMeansMP {
     JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
     //TODO
-
+    JavaRDD<String> lines = sc.textFile(inputFile);
     JavaRDD<Vector> points = lines.map(new ParsePoint()); JavaRDD<String> titles = lines.map(new ParseTitle());
     model = KMeans.train(points.rdd(), k, iterations, runs, KMeans.RANDOM(), 0);
     results =titles.zip(points).mapToPair(new ClusterCars(model)).groupByKey();
