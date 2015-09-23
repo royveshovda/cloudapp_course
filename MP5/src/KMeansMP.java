@@ -16,16 +16,22 @@ import scala.Tuple2;
 
 
 public final class KMeansMP {
-  private static final Pattern SPACE = Pattern.compile(",");
-  public Vector call(String line) {
-    String[] tok = SPACE.split(line);
-    double[] point = new double[tok.length-1]; for (int i = 1; i < tok.length; ++i) {
-    point[i-1] = Double.parseDouble(tok[i]); }
-    return Vectors.dense(point); }
+  private static class ParsePoint implements Function<String, Vector> {
+    private static final Pattern SPACE = Pattern.compile(",");
+
+    public Vector call(String line) {
+      String[] tok = SPACE.split(line);
+      double[] point = new double[tok.length-1];
+      for (int i = 1; i < tok.length; ++i) {
+        point[i-1] = Double.parseDouble(tok[i]);
+      }
+      return Vectors.dense(point);
+    }
   }
 
   private static class ParseTitle implements Function<String, String> {
     private static final Pattern SPACE = Pattern.compile(",");
+    
     public String call(String line) {
       String[] tok = SPACE.split(line); return tok[0];
     }
