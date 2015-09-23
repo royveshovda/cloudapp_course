@@ -32,10 +32,10 @@ public class ShortestPathsComputation extends BasicComputation<
       Vertex<IntWritable, IntWritable, NullWritable> vertex,
       Iterable<IntWritable> messages) throws IOException {
     if (getSuperstep() == 0) {
-      setValue(new DoubleWritable(Double.MAX_VALUE));
+      setValue(new IntWritable(Integer.MAX_VALUE));
     }
-    double minDist = isSource() ? 0d : Double.MAX_VALUE;
-    for (DoubleWritable message : messages) {
+    int minDist = isSource() ? 0d : Integer.MAX_VALUE;
+    for (IntWritable message : messages) {
       minDist = Math.min(minDist, message.get());
     }
     if (LOG.isDebugEnabled()) {
@@ -43,14 +43,14 @@ public class ShortestPathsComputation extends BasicComputation<
           " vertex value = " + getValue());
     }
     if (minDist < getValue().get()) {
-      setValue(new DoubleWritable(minDist));
-      for (Edge<LongWritable, FloatWritable> edge : getEdges()) {
-        double distance = minDist + edge.getValue().get();
+      setValue(new IntWritable(minDist));
+      for (Edge<IntWritable, IntWritable> edge : getEdges()) {
+        int distance = minDist + edge.getValue().get();
         if (LOG.isDebugEnabled()) {
           LOG.debug("Vertex " + getId() + " sent to " +
               edge.getTargetVertexId() + " = " + distance);
         }
-        sendMessage(edge.getTargetVertexId(), new DoubleWritable(distance));
+        sendMessage(edge.getTargetVertexId(), new IntWritable(distance));
       }
     }
     voteToHalt();
