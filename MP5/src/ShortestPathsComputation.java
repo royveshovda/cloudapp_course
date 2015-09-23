@@ -34,7 +34,7 @@ public class ShortestPathsComputation extends BasicComputation<
     if (getSuperstep() == 0) {
       vertex.setValue(new IntWritable(Integer.MAX_VALUE));
     }
-    int minDist = isSource() ? 0 : Integer.MAX_VALUE;
+    int minDist = isSource(vertex) ? 0 : Integer.MAX_VALUE;
     for (IntWritable message : messages) {
       minDist = Math.min(minDist, message.get());
     }
