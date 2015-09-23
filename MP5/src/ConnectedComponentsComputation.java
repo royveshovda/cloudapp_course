@@ -23,7 +23,6 @@ public class ConnectedComponentsComputation extends
    */
   @Override
   public void compute(Vertex<IntWritable, IntWritable, NullWritable> vertex, Iterable<IntWritable> messages) throws IOException {
-    //TODO
     int currentComponent = vertex.getValue().get();
     // First superstep is special, because we can simply look at the neighbors
     if (getSuperstep() == 0) {

@@ -66,7 +66,6 @@ public final class KMeansMP {
     }
   }
   
-  // TODO
   public static void main(String[] args) {
     if (args.length < 2) {
       System.err.println("Usage: KMeansMP <input_file> <results>");
@@ -84,7 +83,6 @@ public final class KMeansMP {
     SparkConf sparkConf = new SparkConf().setAppName("KMeans MP");
     JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-    //TODO
     JavaRDD<String> lines = sc.textFile(inputFile);
     JavaRDD<Vector> points = lines.map(new ParsePoint()); JavaRDD<String> titles = lines.map(new ParseTitle());
     model = KMeans.train(points.rdd(), k, iterations, runs, KMeans.RANDOM(), 0);
