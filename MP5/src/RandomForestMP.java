@@ -20,7 +20,7 @@ public final class RandomForestMP {
         private static final Pattern SPACE = Pattern.compile(",");
         public LabeledPoint call(String line) throws Exception {
             String[] tok = SPACE.split(line);
-            int label = Integer.parseInt(tok[tok.length-1]);
+            double label = Double.parseDouble(tok[tok.length-1]);
             double[] point = new double[tok.length-1];
             for (int i = 0; i < tok.length - 1; ++i) {
                 point[i] = Double.parseDouble(tok[i]);
