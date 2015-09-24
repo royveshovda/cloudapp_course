@@ -16,6 +16,19 @@ import java.util.regex.Pattern;
 
 public final class RandomForestMP {
 
+    private static class DataToPoint implements Function<String, LabeledPoint> {
+        private static final Pattern SPACE = Pattern.compile(",");
+        public LabeledPoint call(String line) throws Exception {
+            String[] tok = SPACE.split(line);
+            int label = Integer.parseInteger(tok[tok.length-1]);
+            int[] point = new int[tok.length-1];
+            for (int i = 0; i < tok.length - 1; ++i) {
+                point[i] = Integer.parseInteger(tok[i]);
+            }
+            return new LabeledPoint(label, Vectors.dense(point));
+        }
+    }
+
     public static void main(String[] args) {
         if (args.length < 3) {
             System.err.println(
@@ -41,13 +54,21 @@ public final class RandomForestMP {
 
 		// TODO
 
-        //JavaRDD<LabeledPoint> results = test.map(new Function<Vector, LabeledPoint>() {
-        //    public LabeledPoint call(Vector points) {
-        //        return new LabeledPoint(model.predict(points), points);
-        //    }
-        //});
+        //TODO: Get input data
+        //TODO: set categorialFeaturesInfo
 
-        //results.saveAsTextFile(results_path);
+        JavaRDD<LabeledPoint> train = sc.textFile(training_data_path).map(new DataToPoint());
+        JavaRDD<LabeledPoint> test = sc.textFile(test_data_path).map(new DataToPoint());
+
+        model = RandomForest.trainClassifier(training_data, numClasses, categoricalFeaturesInfo, numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins, seed);
+
+        JavaRDD<LabeledPoint> results = test.map(new Function<Vector, LabeledPoint>() {
+            public LabeledPoint call(Vector points) {
+                return new LabeledPoint(model.predict(points), points);
+            }
+        });
+
+        results.saveAsTextFile(results_path);
 
         sc.stop();
     }
